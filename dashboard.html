@@ -6,8 +6,32 @@
 </head>
 <body>
     <div style="text-align: center; margin-top: 100px; font-family: tahoma;">
-        <h1>Welcome to T-REX LEARN</h1>
-        <p>تم تسجيل الدخول بنجاح</p>
+        <h1>مرحباً بك في نظام تي ركس التعليمي</h1>
+        <p>تم تسجيل الدخول بنجاح وإثبات هويتك في قاعدة البيانات</p>
+        <button onclick="logoutUser()" style="padding: 10px 20px; margin-top: 20px; cursor: pointer; background: #d9534f; color: #fff; border: none; font-weight: bold;">تسجيل الخروج</button>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+    
+    <script>
+        // دالة التحقق من هوية الطالب بمجرد فتح الصفحة
+        async function checkAuth() {
+            const { data: { session } } = await supabase.auth.getSession();
+            // لو مفيش جلسة نشطة، اطرد المستخدم لصفحة الدخول
+            if (!session) {
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // دالة تسجيل الخروج وتدمير الجلسة
+        async function logoutUser() {
+            await supabase.auth.signOut();
+            window.location.href = 'index.html';
+        }
+
+        // تشغيل فحص الحماية فوراً
+        checkAuth();
+    </script>
 </body>
 </html>
